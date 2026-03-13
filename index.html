@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI大模型实战：从零基础到项目落地</title>
+<style>
+:root {
+  --accent: #2563eb;
+  --accent-light: #eff6ff;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --border: #e2e8f0;
+  --code-bg: #1e293b;
+  --code-text: #e2e8f0;
+  --note-bg: #f0fdf4;
+  --note-border: #22c55e;
+  --radius: 8px;
+  --max-width: 820px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+               "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  font-size: 17px; line-height: 1.85; color: var(--text);
+  background: #f8fafc;
+}
+
+/* ---- 顶部导航 ---- */
+.site-header {
+  position: sticky; top: 0; z-index: 100;
+  background: #fff; border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+.site-header-inner {
+  max-width: var(--max-width); margin: 0 auto;
+  height: 52px; display: flex; align-items: center; gap: 12px;
+}
+.site-title { font-weight: 700; font-size: 15px; color: var(--text); text-decoration: none; }
+.site-title:hover { color: var(--accent); }
+.header-sep { color: var(--border); }
+.part-badge {
+  font-size: 12px; font-weight: 600; padding: 2px 10px;
+  border-radius: 20px; color: #fff;
+}
+
+/* ---- 主体 ---- */
+.page-wrapper { max-width: var(--max-width); margin: 0 auto; padding: 48px 24px 80px; }
+
+/* ---- 文章头 ---- */
+.article-header { margin-bottom: 40px; }
+.article-num { font-size: 13px; color: var(--text-muted); margin-bottom: 10px; }
+.article-title { font-size: 28px; font-weight: 800; line-height: 1.35; color: var(--text); margin-bottom: 12px; }
+.article-subtitle { font-size: 15px; color: var(--text-muted); line-height: 1.6; padding-bottom: 28px; border-bottom: 2px solid var(--border); }
+
+/* ---- 正文 ---- */
+.article-body p { margin-bottom: 20px; text-align: justify; }
+
+h2 { font-size: 22px; font-weight: 700; color: var(--text); margin: 44px 0 16px;
+     padding-left: 14px; border-left: 4px solid var(--accent); }
+h3 { font-size: 19px; font-weight: 700; color: var(--text); margin: 32px 0 12px; }
+h4 { font-size: 17px; font-weight: 700; color: #334155; margin: 24px 0 10px; }
+h5 { font-size: 16px; font-weight: 600; color: #475569; margin: 20px 0 8px; }
+
+/* ---- 注意块 ---- */
+.note-block {
+  background: var(--note-bg); border-left: 4px solid var(--note-border);
+  padding: 16px 20px; margin: 24px 0; border-radius: 0 var(--radius) var(--radius) 0;
+  font-size: 15px; color: #166534; line-height: 1.7;
+}
+
+/* ---- 代码块 ---- */
+.code-block {
+  background: var(--code-bg); border-radius: var(--radius);
+  padding: 20px 24px; margin: 24px 0; overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.code-block pre {
+  font-family: "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+  font-size: 13.5px; line-height: 1.65; color: var(--code-text);
+  white-space: pre; margin: 0;
+}
+
+/* ---- 表格 ---- */
+.table-wrap { overflow-x: auto; margin: 24px 0; border-radius: var(--radius); border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { background: var(--accent); color: #fff; font-weight: 600; padding: 11px 14px; text-align: left; }
+td { padding: 10px 14px; border-top: 1px solid var(--border); color: var(--text); line-height: 1.6; }
+tr:nth-child(even) td { background: #f8fafc; }
+
+/* ---- 图片 ---- */
+.img-wrap { text-align: center; margin: 28px 0; }
+.img-wrap img { max-width: 100%; height: auto; border-radius: var(--radius); box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+.img-caption { font-size: 13px; color: var(--text-muted); margin-top: 10px; }
+
+/* ---- 列表 ---- */
+ul, ol { margin: 16px 0 20px 1.6em; }
+li { margin-bottom: 8px; line-height: 1.75; }
+
+/* ---- 图表题注 ---- */
+.caption { font-size: 13px; color: var(--text-muted); text-align: center; margin: -16px 0 20px; }
+
+/* ---- strong / em ---- */
+strong { color: #1d4ed8; font-weight: 700; }
+em { font-style: normal; color: #b45309; border-bottom: 1px dashed #b45309; }
+
+/* ---- 上下篇导航 ---- */
+.article-nav {
+  display: flex; justify-content: space-between; gap: 16px;
+  max-width: var(--max-width); margin: 0 auto; padding: 0 24px 60px;
+}
+.nav-btn {
+  flex: 1; display: flex; flex-direction: column; padding: 16px 20px;
+  background: #fff; border: 1px solid var(--border); border-radius: var(--radius);
+  text-decoration: none; color: var(--text); transition: border-color .15s, box-shadow .15s;
+  min-width: 0;
+}
+.nav-btn:hover { border-color: var(--accent); box-shadow: 0 2px 8px rgba(37,99,235,.1); }
+.nav-btn.disabled { opacity: .4; pointer-events: none; }
+.nav-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.nav-title { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.nav-btn.next { text-align: right; }
+
+/* ---- 底部 ---- */
+.site-footer {
+  background: #fff; border-top: 1px solid var(--border);
+  padding: 40px 24px; text-align: center; color: var(--text-muted); font-size: 14px;
+}
+.footer-inner { max-width: var(--max-width); margin: 0 auto; }
+.footer-qr img { width: 130px; height: 130px; border-radius: var(--radius); margin-bottom: 12px; }
+.footer-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+.footer-desc { line-height: 1.7; }
+
+/* ---- 响应式 ---- */
+@media (max-width: 640px) {
+  .page-wrapper { padding: 28px 16px 60px; }
+  .article-title { font-size: 22px; }
+  h2 { font-size: 19px; }
+  h3 { font-size: 17px; }
+  .article-nav { flex-direction: column; padding: 0 16px 40px; }
+  .code-block { padding: 14px 16px; }
+  .code-block pre { font-size: 12.5px; }
+}
+
+.hero { background: linear-gradient(135deg,#1e40af,#7c3aed); color:#fff; padding:64px 24px; text-align:center; }
+.hero-inner { max-width:700px; margin:0 auto; }
+.hero h1 { font-size:32px; font-weight:800; margin-bottom:14px; line-height:1.3; }
+.hero p { font-size:17px; opacity:.85; line-height:1.7; }
+.hero-stats { display:flex; justify-content:center; gap:40px; margin-top:32px; }
+.stat { font-size:13px; opacity:.75; }
+.stat strong { display:block; font-size:26px; font-weight:800; opacity:1; margin-bottom:2px; }
+.idx-body { max-width:820px; margin:0 auto; padding:48px 24px 80px; }
+.idx-section { margin-bottom:44px; }
+.idx-part-header { display:flex; align-items:center; gap:14px; margin-bottom:16px; }
+.idx-part-badge { font-size:13px; font-weight:700; padding:4px 14px; border-radius:20px; color:#fff; }
+.idx-part-desc { font-size:14px; color:#64748b; }
+.idx-cards { display:grid; gap:10px; }
+.idx-card {
+  display:flex; align-items:flex-start; gap:12px; padding:14px 18px;
+  background:#fff; border:1px solid #e2e8f0; border-radius:8px;
+  text-decoration:none; color:#1e293b; transition:border-color .15s, box-shadow .15s;
+}
+.idx-card:hover { border-color:var(--accent); box-shadow:0 2px 8px rgba(37,99,235,.1); }
+.idx-num { font-size:13px; font-weight:700; min-width:32px; padding-top:1px; }
+.idx-title { font-size:15px; line-height:1.5; }
+.footer-qr img { width:130px; border-radius:8px; margin-bottom:12px; }
+.footer-title { font-size:16px; font-weight:700; color:#1e293b; margin-bottom:6px; }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-title" href="index.html">AI大模型实战</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1>AI大模型实战<br>从零基础到项目落地</h1>
+    <p>系统讲解大模型技术栈，从 Python 基础、Transformer 原理，到 RAG、微调、Agent，再到生产级部署与安全评测</p>
+    <div class="hero-stats">
+      <div class="stat"><strong>41</strong>篇文章</div>
+      <div class="stat"><strong>5</strong>大篇章</div>
+      <div class="stat"><strong>20</strong>章节</div>
+    </div>
+  </div>
+</div>
+
+<div class="idx-body">
+  <section class="idx-section"><div class="idx-part-header"><span class="idx-part-badge" style="background:#2563eb">基础篇</span><span class="idx-part-desc">大模型概念、Python基础、深度学习入门、NLP基础（共7篇）</span></div><div class="idx-cards"><a class="idx-card" href="web_articles/01.html"><span class="idx-num" style="color:#2563eb">#01</span><span class="idx-title">AI大模型到底是什么？一篇文章带你从零搞懂</span></a><a class="idx-card" href="web_articles/02.html"><span class="idx-num" style="color:#2563eb">#02</span><span class="idx-title">5分钟，让你亲手调用一次大模型API</span></a><a class="idx-card" href="web_articles/03.html"><span class="idx-num" style="color:#2563eb">#03</span><span class="idx-title">AI开发第一步：Python环境搭建与语法速成</span></a><a class="idx-card" href="web_articles/04.html"><span class="idx-num" style="color:#2563eb">#04</span><span class="idx-title">Python进阶：函数、类、NumPy、Pandas一网打尽</span></a><a class="idx-card" href="web_articles/05.html"><span class="idx-num" style="color:#2563eb">#05</span><span class="idx-title">深度学习没那么难：从神经网络到PyTorch实战</span></a><a class="idx-card" href="web_articles/06.html"><span class="idx-num" style="color:#2563eb">#06</span><span class="idx-title">让机器读懂人话：NLP基础与词嵌入技术详解</span></a><a class="idx-card" href="web_articles/07.html"><span class="idx-num" style="color:#2563eb">#07</span><span class="idx-title">手把手教你用HuggingFace做中文情感分析</span></a></div></section><section class="idx-section"><div class="idx-part-header"><span class="idx-part-badge" style="background:#7c3aed">核心篇</span><span class="idx-part-desc">Transformer原理、大模型训练、Prompt工程、API调用（共8篇）</span></div><div class="idx-cards"><a class="idx-card" href="web_articles/08.html"><span class="idx-num" style="color:#7c3aed">#08</span><span class="idx-title">Transformer为什么能统治AI？注意力机制全解析</span></a><a class="idx-card" href="web_articles/09.html"><span class="idx-num" style="color:#7c3aed">#09</span><span class="idx-title">手撕Transformer：从零用PyTorch实现完整代码</span></a><a class="idx-card" href="web_articles/10.html"><span class="idx-num" style="color:#7c3aed">#10</span><span class="idx-title">ChatGPT是怎么炼成的？大模型训练全流程揭秘</span></a><a class="idx-card" href="web_articles/11.html"><span class="idx-num" style="color:#7c3aed">#11</span><span class="idx-title">和AI说话也有技巧：Prompt Engineering入门指南</span></a><a class="idx-card" href="web_articles/12.html"><span class="idx-num" style="color:#7c3aed">#12</span><span class="idx-title">收藏级！高质量Prompt模板库，拿来就能用</span></a><a class="idx-card" href="web_articles/13.html"><span class="idx-num" style="color:#7c3aed">#13</span><span class="idx-title">大模型API怎么调？从认证到流式输出全攻略</span></a><a class="idx-card" href="web_articles/14.html"><span class="idx-num" style="color:#7c3aed">#14</span><span class="idx-title">让AI调用你的代码：Function Calling工具调用详解</span></a><a class="idx-card" href="web_articles/15.html"><span class="idx-num" style="color:#7c3aed">#15</span><span class="idx-title">实战：开发一个多模型切换的智能助手</span></a></div></section><section class="idx-section"><div class="idx-part-header"><span class="idx-part-badge" style="background:#059669">进阶篇</span><span class="idx-part-desc">Fine-Tuning微调、RAG检索增强、LangChain、AI Agent（共8篇）</span></div><div class="idx-cards"><a class="idx-card" href="web_articles/16.html"><span class="idx-num" style="color:#059669">#16</span><span class="idx-title">大模型微调到底怎么做？LoRA/QLoRA原理全解析</span></a><a class="idx-card" href="web_articles/17.html"><span class="idx-num" style="color:#059669">#17</span><span class="idx-title">实战！用QLoRA微调Qwen模型打造领域客服</span></a><a class="idx-card" href="web_articles/18.html"><span class="idx-num" style="color:#059669">#18</span><span class="idx-title">让大模型拥有外部知识：RAG检索增强生成全解析</span></a><a class="idx-card" href="web_articles/19.html"><span class="idx-num" style="color:#059669">#19</span><span class="idx-title">Milvus/Chroma/FAISS怎么选？向量库对比+企业知识库实战</span></a><a class="idx-card" href="web_articles/20.html"><span class="idx-num" style="color:#059669">#20</span><span class="idx-title">LangChain从入门到精通：Model I/O、Chain、Memory全解析</span></a><a class="idx-card" href="web_articles/21.html"><span class="idx-num" style="color:#059669">#21</span><span class="idx-title">LangSmith调试+LangGraph状态机，搭建复杂AI工作流</span></a><a class="idx-card" href="web_articles/22.html"><span class="idx-num" style="color:#059669">#22</span><span class="idx-title">AI Agent到底是什么？ReAct模式与工具调用深度解析</span></a><a class="idx-card" href="web_articles/23.html"><span class="idx-num" style="color:#059669">#23</span><span class="idx-title">多Agent协作+MCP协议：构建具备联网搜索与代码执行能力的Agent</span></a></div></section><section class="idx-section"><div class="idx-part-header"><span class="idx-part-badge" style="background:#d97706">应用篇</span><span class="idx-part-desc">多模态应用、应用开发、推理部署优化、安全评测（共9篇）</span></div><div class="idx-cards"><a class="idx-card" href="web_articles/24.html"><span class="idx-num" style="color:#d97706">#24</span><span class="idx-title">大模型「五感觉醒」：多模态技术全解析</span></a><a class="idx-card" href="web_articles/25.html"><span class="idx-num" style="color:#d97706">#25</span><span class="idx-title">实战！用Qwen2.5-VL+Whisper构建多模态内容分析平台</span></a><a class="idx-card" href="web_articles/26.html"><span class="idx-num" style="color:#d97706">#26</span><span class="idx-title">大模型应用怎么设计？架构、FastAPI服务、对话系统全攻略</span></a><a class="idx-card" href="web_articles/27.html"><span class="idx-num" style="color:#d97706">#27</span><span class="idx-title">实战：合同审核+代码助手+端到端智能写作助手</span></a><a class="idx-card" href="web_articles/28.html"><span class="idx-num" style="color:#d97706">#28</span><span class="idx-title">大模型推理太慢太贵？量化+推理框架帮你省钱提速</span></a><a class="idx-card" href="web_articles/29.html"><span class="idx-num" style="color:#d97706">#29</span><span class="idx-title">手机上跑大模型？边缘部署+成本估算+vLLM生产级部署实战</span></a><a class="idx-card" href="web_articles/30.html"><span class="idx-num" style="color:#d97706">#30</span><span class="idx-title">大模型怎么评分？MMLU、C-Eval、HumanEval评测基准全解析</span></a><a class="idx-card" href="web_articles/31.html"><span class="idx-num" style="color:#d97706">#31</span><span class="idx-title">大模型会说谎、有偏见？幻觉、偏见、内容安全与红队测试详解</span></a><a class="idx-card" href="web_articles/32.html"><span class="idx-num" style="color:#d97706">#32</span><span class="idx-title">实战：搭建一套完整的大模型评测与安全审计系统</span></a></div></section><section class="idx-section"><div class="idx-part-header"><span class="idx-part-badge" style="background:#dc2626">实战篇</span><span class="idx-part-desc">智能客服、垂直大模型、多Agent工作流、技术趋势（共9篇）</span></div><div class="idx-cards"><a class="idx-card" href="web_articles/33.html"><span class="idx-num" style="color:#dc2626">#33</span><span class="idx-title">从0搭一套智能客服系统：架构设计与RAG知识库管道</span></a><a class="idx-card" href="web_articles/34.html"><span class="idx-num" style="color:#dc2626">#34</span><span class="idx-title">智能客服的大脑：双层意图识别+对话状态机+工单人机协作</span></a><a class="idx-card" href="web_articles/35.html"><span class="idx-num" style="color:#dc2626">#35</span><span class="idx-title">智能客服上线全攻略：A/B测试+Docker部署+运维监控</span></a><a class="idx-card" href="web_articles/36.html"><span class="idx-num" style="color:#dc2626">#36</span><span class="idx-title">打造垂直领域大模型：数据工程五层漏斗+继续预训练实战</span></a><a class="idx-card" href="web_articles/37.html"><span class="idx-num" style="color:#dc2626">#37</span><span class="idx-title">医疗/法律/金融大模型实践：LoRA微调+评估+数据飞轮闭环</span></a><a class="idx-card" href="web_articles/38.html"><span class="idx-num" style="color:#dc2626">#38</span><span class="idx-title">单Agent不够用了？多Agent协作架构模式与DAG工作流编排</span></a><a class="idx-card" href="web_articles/39.html"><span class="idx-num" style="color:#dc2626">#39</span><span class="idx-title">规划者+执行者+审核者：多Agent角色设计与工具链集成详解</span></a><a class="idx-card" href="web_articles/40.html"><span class="idx-num" style="color:#dc2626">#40</span><span class="idx-title">实战！多Agent自动生成数据分析报告：异常处理+人工介入+完整编排</span></a><a class="idx-card" href="web_articles/41.html"><span class="idx-num" style="color:#dc2626">#41</span><span class="idx-title">大模型未来在哪里？推理模型、MoE、具身智能+从入门到专家学习路线</span></a></div></section>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-qr">
+      <img src="assets/wechat_qrcode.jpg" alt="AI数学与未来" />
+    </div>
+    <div class="footer-title">关注公众号「AI 数学与未来」</div>
+    <div class="footer-desc">持续更新 AI 大模型技术科普，从数学原理到工程落地<br>扫码关注，获取系列文章持续更新</div>
+  </div>
+</footer>
+</body>
+</html>
