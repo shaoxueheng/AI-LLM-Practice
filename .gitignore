@@ -1,0 +1,19 @@
+# Word 原始文件（体积过大，不上传）
+*.docx
+
+# Python 缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# 转换过程中的临时封面图
+wechat_articles/_cover_*.jpg
+
+# 环境变量（含微信 AppID/AppSecret，禁止上传）
+.env
+.env.*
+
+# 系统文件
+.DS_Store
+Thumbs.db
+desktop.ini
