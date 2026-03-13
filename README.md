@@ -88,7 +88,7 @@
 
 如果内容对你有帮助，欢迎 **Star ⭐** 支持！
 
-有问题或建议，欢迎提 [Issue](https://github.com/shaobaoguo/AI-LLM-Practice/issues) 交流。
+有问题或建议，欢迎提 [Issue](https://github.com/shaoxueheng/AI-LLM-Practice/issues) 交流。
 
 ---
 
